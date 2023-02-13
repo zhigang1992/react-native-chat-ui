@@ -97,15 +97,16 @@ export const Input = ({
           )
         ))}
       <TextInput
-        multiline
         placeholder={l10n.inputPlaceholder}
         placeholderTextColor={`${String(theme.colors.inputText)}80`}
         underlineColorAndroid='transparent'
+        returnKeyType='send'
         {...textInputProps}
         // Keep our implementation but allow user to use these `TextInputProps`
         style={[input, textInputProps?.style]}
         onChangeText={handleChangeText}
         value={value}
+        onSubmitEditing={handleSend}
       />
       {sendButtonVisibilityMode === 'always' ||
       (sendButtonVisibilityMode === 'editing' && user && value.trim()) ? (
