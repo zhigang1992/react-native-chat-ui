@@ -55,25 +55,31 @@ export const Input = ({
   const { container, input, marginRight } = styles({ theme })
 
   // Use `defaultValue` if provided
-  const [text, setText] = React.useState(textInputProps?.defaultValue ?? '')
+  const text = React.useRef(textInputProps?.defaultValue ?? '')
+  const [hasText, setHasText] = React.useState(!!text.current)
+  const textInputRef = React.useRef<TextInput>(null)
+
 
   const value = textInputProps?.value ?? text
 
   const handleChangeText = (newText: string) => {
     // Track local state in case `onChangeText` is provided and `value` is not
-    setText(newText)
+    text.current = newText
     textInputProps?.onChangeText?.(newText)
+    setHasText(!!newText)
   }
 
   const handleSend = () => {
-    const trimmedValue = value.trim()
+    const trimmedValue = text.current.trim()
 
     // Impossible to test since button is not visible when value is empty.
     // Additional check for the keyboard input.
     /* istanbul ignore next */
     if (trimmedValue) {
       onSendPress({ text: trimmedValue, type: 'text' })
-      setText('')
+      text.current = ''
+      textInputRef.current?.setNativeProps({ text: '' })
+      setHasText(false)
     }
   }
 
@@ -104,12 +110,13 @@ export const Input = ({
         {...textInputProps}
         // Keep our implementation but allow user to use these `TextInputProps`
         style={[input, textInputProps?.style]}
+        ref={textInputRef}
         onChangeText={handleChangeText}
-        value={value}
+        defaultValue={text.current}
         onSubmitEditing={handleSend}
       />
       {sendButtonVisibilityMode === 'always' ||
-      (sendButtonVisibilityMode === 'editing' && user && value.trim()) ? (
+      (sendButtonVisibilityMode === 'editing' && user && hasText) ? (
         <SendButton onPress={handleSend} />
       ) : null}
     </View>
