@@ -36,7 +36,6 @@ import { Input, InputAdditionalProps, InputTopLevelProps } from '../Input'
 import { Message, MessageTopLevelProps } from '../Message'
 import ImageView from './ImageView'
 import styles from './styles'
-import { FlashList } from "@shopify/flash-list";
 
 // Untestable
 /* istanbul ignore next */
@@ -150,7 +149,7 @@ export const Chat = ({
 
   const { onLayout, size } = useComponentSize()
   const animationRef = React.useRef(false)
-  const list = React.useRef<FlashList<MessageType.DerivedAny>>(null)
+  const list = React.useRef<FlatList<MessageType.DerivedAny>>(null)
   const insets = useSafeAreaInsets()
   const [isImageViewVisible, setIsImageViewVisible] = React.useState(false)
   const [isNextPageLoading, setNextPageLoading] = React.useState(false)
@@ -356,7 +355,7 @@ export const Chat = ({
 
   const renderScrollable = React.useCallback(
     (panHandlers: GestureResponderHandlers) => (
-      <FlashList
+      <FlatList
         automaticallyAdjustContentInsets={false}
         contentContainerStyle={[
           flatListContentContainer,
@@ -365,13 +364,13 @@ export const Chat = ({
             justifyContent: chatMessages.length !== 0 ? undefined : 'center',
             paddingTop: insets.bottom,
           },
-        ] as any}
-        // initialNumToRender={10}
+        ]}
+        initialNumToRender={10}
         ListEmptyComponent={renderListEmptyComponent}
         ListFooterComponent={renderListFooterComponent}
         ListHeaderComponent={<View />}
         ListHeaderComponentStyle={header}
-        // maxToRenderPerBatch={6}
+        maxToRenderPerBatch={6}
         onEndReachedThreshold={0.75}
         style={flatList}
         showsVerticalScrollIndicator={false}
@@ -380,7 +379,7 @@ export const Chat = ({
         inverted
         keyboardDismissMode='interactive'
         keyExtractor={keyExtractor}
-        onEndReached={handleEndReached as any}
+        onEndReached={handleEndReached}
         ref={list}
         renderItem={renderItem}
         {...panHandlers}
