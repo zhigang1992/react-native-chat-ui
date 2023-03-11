@@ -201,9 +201,7 @@ export const calculateChatMessages = (
         nextMessageInGroup,
         // TODO: Check this
         offset: !nextMessageInGroup ? 12 : 0,
-        showName:
-          notMyMessage &&
-          showUserNames &&
+        showName: showUserNames &&
           showName &&
           !!getUserName(message.author),
         showStatus: true,
