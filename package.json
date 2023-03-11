@@ -1,6 +1,6 @@
 {
   "name": "@zhigang1992/react-native-chat-ui",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Actively maintained, community-driven chat UI implementation with an optional Firebase BaaS.",
   "homepage": "https://flyer.chat",
   "repository": {
