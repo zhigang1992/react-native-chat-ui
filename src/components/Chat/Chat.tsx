@@ -36,7 +36,7 @@ import { Input, InputAdditionalProps, InputTopLevelProps } from '../Input'
 import { Message, MessageTopLevelProps } from '../Message'
 import ImageView from './ImageView'
 import styles from './styles'
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 // Untestable
 /* istanbul ignore next */
@@ -133,6 +133,7 @@ export const Chat = ({
   showUserAvatars = false,
   showUserNames = false,
   textInputProps,
+  textInputMethodRef,
   theme = defaultTheme,
   timeFormat,
   usePreviewData = true,
@@ -368,9 +369,9 @@ export const Chat = ({
             flatListContentContainer,
             // eslint-disable-next-line react-native/no-inline-styles
             {
-              justifyContent: chatMessages.length !== 0 ? undefined : "center",
-              paddingTop: insets.bottom
-            }
+              justifyContent: chatMessages.length !== 0 ? undefined : 'center',
+              paddingTop: insets.bottom,
+            },
           ]}
           initialNumToRender={10}
           ListEmptyComponent={renderListEmptyComponent}
@@ -384,14 +385,14 @@ export const Chat = ({
           {...unwrap(flatListProps)}
           data={chatMessages}
           inverted
-          keyboardDismissMode="interactive"
+          keyboardDismissMode='interactive'
           keyExtractor={keyExtractor}
           onEndReached={handleEndReached}
           ref={list}
           renderItem={renderItem}
           {...panHandlers}
         />
-      );
+      )
     },
     [
       chatMessages,
@@ -436,6 +437,7 @@ export const Chat = ({
                     renderScrollable,
                     sendButtonVisibilityMode,
                     textInputProps,
+                    textInputMethodRef,
                   }}
                 />
               </KeyboardAccessoryView>
