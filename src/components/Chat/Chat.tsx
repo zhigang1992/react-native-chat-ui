@@ -414,7 +414,6 @@ export const Chat = ({
       <ThemeContext.Provider value={theme}>
         <L10nContext.Provider value={l10nValue}>
           <View style={container} onLayout={onLayout}>
-            {autoCompleteNode}
             {customBottomComponent ? (
               <>
                 <>{renderScrollable({})}</>
@@ -427,6 +426,7 @@ export const Chat = ({
                   style: keyboardAccessoryView,
                 }}
               >
+                {autoCompleteNode}
                 <Input
                   {...{
                     ...unwrap(inputProps),

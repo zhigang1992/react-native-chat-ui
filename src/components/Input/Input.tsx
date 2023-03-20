@@ -29,6 +29,7 @@ export interface InputTopLevelProps {
    * `TextInput` state. Defaults to `editing`. */
   sendButtonVisibilityMode?: 'always' | 'editing'
   textInputProps?: TextInputProps
+  textInputRef?: React.Ref<TextInput>
 }
 
 export interface InputAdditionalProps {
@@ -48,6 +49,7 @@ export const Input = ({
   onSendPress,
   sendButtonVisibilityMode,
   textInputProps,
+  textInputRef: textInputRefProp,
 }: InputProps) => {
   const l10n = React.useContext(L10nContext)
   const theme = React.useContext(ThemeContext)
@@ -57,7 +59,8 @@ export const Input = ({
   // Use `defaultValue` if provided
   const text = React.useRef(textInputProps?.defaultValue ?? '')
   const [hasText, setHasText] = React.useState(!!text.current)
-  const textInputRef = React.useRef<TextInput>(null)
+  const internalRef = React.useRef<TextInput>(null);
+  const textInputRef = textInputRefProp ?? internalRef;
 
 
   const value = textInputProps?.value ?? text
