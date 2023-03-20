@@ -75,9 +75,11 @@ export const Input = ({
       setText(newText: string) {
         text.current = newText
         textInputRef.current?.setNativeProps({ text: newText })
+        textInputProps?.onChangeText?.(newText)
+        setHasText(!!newText)
       },
     }),
-    []
+    [textInputProps]
   )
 
   const handleSend = () => {
