@@ -13,6 +13,7 @@ import {
 } from '../CircularActivityIndicator'
 import { SendButton } from '../SendButton'
 import styles from './styles'
+import { useImperativeHandle } from 'react'
 
 export interface InputTopLevelProps {
   /** Whether attachment is uploading. Will replace attachment button with a
@@ -29,7 +30,7 @@ export interface InputTopLevelProps {
    * `TextInput` state. Defaults to `editing`. */
   sendButtonVisibilityMode?: 'always' | 'editing'
   textInputProps?: TextInputProps
-  textInputRef?: React.Ref<TextInput>
+  textInputMethodRef?: React.Ref<{ setText: (text: string) => void }>
 }
 
 export interface InputAdditionalProps {
@@ -49,7 +50,7 @@ export const Input = ({
   onSendPress,
   sendButtonVisibilityMode,
   textInputProps,
-  textInputRef: textInputRefProp,
+  textInputMethodRef,
 }: InputProps) => {
   const l10n = React.useContext(L10nContext)
   const theme = React.useContext(ThemeContext)
@@ -59,11 +60,7 @@ export const Input = ({
   // Use `defaultValue` if provided
   const text = React.useRef(textInputProps?.defaultValue ?? '')
   const [hasText, setHasText] = React.useState(!!text.current)
-  const internalRef = React.useRef<TextInput>(null);
-  const textInputRef = textInputRefProp ?? internalRef;
-
-
-  const value = textInputProps?.value ?? text
+  const textInputRef = React.useRef<TextInput>(null)
 
   const handleChangeText = (newText: string) => {
     // Track local state in case `onChangeText` is provided and `value` is not
@@ -71,6 +68,17 @@ export const Input = ({
     textInputProps?.onChangeText?.(newText)
     setHasText(!!newText)
   }
+
+  useImperativeHandle(
+    textInputMethodRef,
+    () => ({
+      setText(newText: string) {
+        text.current = newText
+        textInputRef.current?.setNativeProps({ text: newText })
+      },
+    }),
+    []
+  )
 
   const handleSend = () => {
     const trimmedValue = text.current.trim()
