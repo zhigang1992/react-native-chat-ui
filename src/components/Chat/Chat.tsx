@@ -36,6 +36,7 @@ import { Input, InputAdditionalProps, InputTopLevelProps } from '../Input'
 import { Message, MessageTopLevelProps } from '../Message'
 import ImageView from './ImageView'
 import styles from './styles'
+import { ReactNode } from "react";
 
 // Untestable
 /* istanbul ignore next */
@@ -99,6 +100,7 @@ export interface ChatProps extends ChatTopLevelProps {
    */
   timeFormat?: string
   user: User
+  autoCompleteNode?: ReactNode
 }
 
 /** Entry component, represents the complete chat */
@@ -136,6 +138,7 @@ export const Chat = ({
   usePreviewData = true,
   user,
   flatListComponent,
+  autoCompleteNode,
 }: ChatProps) => {
   const {
     container,
@@ -411,6 +414,7 @@ export const Chat = ({
       <ThemeContext.Provider value={theme}>
         <L10nContext.Provider value={l10nValue}>
           <View style={container} onLayout={onLayout}>
+            {autoCompleteNode}
             {customBottomComponent ? (
               <>
                 <>{renderScrollable({})}</>
