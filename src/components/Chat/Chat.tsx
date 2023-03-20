@@ -72,6 +72,7 @@ export interface ChatProps extends ChatTopLevelProps {
   /** Use this to enable `LayoutAnimation`. Experimental on Android (same as React Native). */
   enableAnimation?: boolean
   flatListProps?: Partial<FlatListProps<MessageType.DerivedAny[]>>
+  flatListComponent?: typeof FlatList
   inputProps?: InputAdditionalProps
   /** Used for pagination (infinite scroll) together with {@link ChatProps.onEndReached}.
    * When true, indicates that there are no more pages to load and
@@ -134,6 +135,7 @@ export const Chat = ({
   timeFormat,
   usePreviewData = true,
   user,
+  flatListComponent,
 }: ChatProps) => {
   const {
     container,
@@ -354,37 +356,40 @@ export const Chat = ({
   )
 
   const renderScrollable = React.useCallback(
-    (panHandlers: GestureResponderHandlers) => (
-      <FlatList
-        automaticallyAdjustContentInsets={false}
-        contentContainerStyle={[
-          flatListContentContainer,
-          // eslint-disable-next-line react-native/no-inline-styles
-          {
-            justifyContent: chatMessages.length !== 0 ? undefined : 'center',
-            paddingTop: insets.bottom,
-          },
-        ]}
-        initialNumToRender={10}
-        ListEmptyComponent={renderListEmptyComponent}
-        ListFooterComponent={renderListFooterComponent}
-        ListHeaderComponent={<View />}
-        ListHeaderComponentStyle={header}
-        maxToRenderPerBatch={6}
-        onEndReachedThreshold={0.75}
-        style={flatList}
-        showsVerticalScrollIndicator={false}
-        {...unwrap(flatListProps)}
-        data={chatMessages}
-        inverted
-        keyboardDismissMode='interactive'
-        keyExtractor={keyExtractor}
-        onEndReached={handleEndReached}
-        ref={list}
-        renderItem={renderItem}
-        {...panHandlers}
-      />
-    ),
+    (panHandlers: GestureResponderHandlers) => {
+      const FlatListComponent = flatListComponent ?? FlatList
+      return (
+        <FlatListComponent
+          automaticallyAdjustContentInsets={false}
+          contentContainerStyle={[
+            flatListContentContainer,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              justifyContent: chatMessages.length !== 0 ? undefined : "center",
+              paddingTop: insets.bottom
+            }
+          ]}
+          initialNumToRender={10}
+          ListEmptyComponent={renderListEmptyComponent}
+          ListFooterComponent={renderListFooterComponent}
+          ListHeaderComponent={<View />}
+          ListHeaderComponentStyle={header}
+          maxToRenderPerBatch={6}
+          onEndReachedThreshold={0.75}
+          style={flatList}
+          showsVerticalScrollIndicator={false}
+          {...unwrap(flatListProps)}
+          data={chatMessages}
+          inverted
+          keyboardDismissMode="interactive"
+          keyExtractor={keyExtractor}
+          onEndReached={handleEndReached}
+          ref={list}
+          renderItem={renderItem}
+          {...panHandlers}
+        />
+      );
+    },
     [
       chatMessages,
       flatList,
@@ -397,6 +402,7 @@ export const Chat = ({
       renderItem,
       renderListEmptyComponent,
       renderListFooterComponent,
+      flatListComponent,
     ]
   )
 
