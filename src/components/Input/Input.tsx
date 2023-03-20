@@ -93,6 +93,7 @@ export const Input = ({
       text.current = ''
       textInputRef.current?.setNativeProps({ text: '' })
       setHasText(false)
+      textInputProps?.onChangeText?.('')
     }
   }
 
