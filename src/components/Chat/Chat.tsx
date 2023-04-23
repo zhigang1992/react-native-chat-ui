@@ -215,11 +215,12 @@ export const Chat = ({
     // `onEndReached`, impossible to test.
     // TODO: Verify again later
     /* istanbul ignore next */
-    async ({ distanceFromEnd }: { distanceFromEnd: number }) => {
+    async (props) => {
       if (
         !onEndReached ||
         isLastPage ||
-        distanceFromEnd <= 0 ||
+        props == null ||
+        props.distanceFromEnd <= 0 ||
         messages.length === 0 ||
         isNextPageLoading
       ) {
